@@ -1,17 +1,6 @@
-# meuapp_projetoclima
+Atividade 2.
+Qual a diferença entre Expandido e Flexível? O que acontece quando dois elementos na mesma Linha ou Coluna têm valores de flex diferentes?
 
-A new Flutter project.
+Expandido: Obriga o elemento filho a preencher todo o espaço disponível. Flexível: Permite que o elemento filho ocupe apenas o tamanho necessário do seu próprio conteúdo. Ele define um teto, mas não força o componente a esticar.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Elementos com valores diferentes, o espaço restante é distribuído de forma proporcional à soma dos valores.
