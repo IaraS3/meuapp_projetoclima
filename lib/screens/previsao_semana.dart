@@ -5,6 +5,25 @@ import '../widgets/linha_previsao.dart';
 class PrevisaoSemanaScreen extends StatelessWidget {
   const PrevisaoSemanaScreen({super.key});
 
+  static const List<Map<String, String>> dias = [
+    {'dia': 'Sexta', 'icone': 'sol', 'min': '18°C', 'max': '30°C'},
+    {'dia': 'Sábado', 'icone': 'nuvem', 'min': '17°C', 'max': '27°C'},
+    {'dia': 'Domingo', 'icone': 'chuva', 'min': '16°C', 'max': '24°C'},
+    {'dia': 'Segunda', 'icone': 'sol', 'min': '18°C', 'max': '29°C'},
+    {'dia': 'Terça', 'icone': 'nuvem', 'min': '19°C', 'max': '28°C'},
+  ];
+
+  static IconData _icone(String nome) {
+    switch (nome) {
+      case 'sol':
+        return Icons.wb_sunny;
+      case 'chuva':
+        return Icons.umbrella;
+      default:
+        return Icons.cloud;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,35 +87,19 @@ class PrevisaoSemanaScreen extends StatelessWidget {
           const Divider(),
 
           const TituloSecao(titulo: 'Próximos dias'),
-          const LinhaPrevisao(
-            dia: 'Sexta',
-            icone: Icons.wb_sunny,
-            minima: '18°C',
-            maxima: '30°C',
-          ),
-          const LinhaPrevisao(
-            dia: 'Sábado',
-            icone: Icons.cloud,
-            minima: '17°C',
-            maxima: '27°C',
-          ),
-          const LinhaPrevisao(
-            dia: 'Domingo',
-            icone: Icons.umbrella,
-            minima: '16°C',
-            maxima: '24°C',
-          ),
-          const LinhaPrevisao(
-            dia: 'Segunda',
-            icone: Icons.wb_sunny,
-            minima: '18°C',
-            maxima: '29°C',
-          ),
-          const LinhaPrevisao(
-            dia: 'Terça',
-            icone: Icons.cloud,
-            minima: '19°C',
-            maxima: '28°C',
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: dias.length,
+            itemBuilder: (context, index) {
+              final item = dias[index];
+              return LinhaPrevisao(
+                dia: item['dia']!,
+                icone: _icone(item['icone']!),
+                minima: item['min']!,
+                maxima: item['max']!,
+              );
+            },
           ),
         ],
       ),
