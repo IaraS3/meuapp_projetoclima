@@ -12,7 +12,7 @@ class PrevisaoSemanaScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Previsão da semana')),
+      appBar: AppBar(title: Text('Previsão da semana • ${cidade.nome}')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -56,14 +56,14 @@ class PrevisaoSemanaScreen extends StatelessWidget {
                 Expanded(
                   child: Container(
                     color: Colors.yellow.shade200,
-                    child: const Center(child: Text('Manhã: 20°C')),
+                    child: Center(child: Text('Manhã: ${cidade.manha}')),
                   ),
                 ),
                 Flexible(
                   flex: 2,
                   child: Container(
                     color: Colors.orange.shade200,
-                    child: const Center(child: Text('Tarde: 29°C')),
+                    child: Center(child: Text('Tarde: ${cidade.tarde}')),
                   ),
                 ),
               ],
@@ -72,13 +72,20 @@ class PrevisaoSemanaScreen extends StatelessWidget {
           const Divider(),
 
           const TituloSecao(titulo: 'Próximos dias'),
-          for (final d in cidade.previsao)
-            LinhaPrevisao(
-              dia: d.dia,
-              icone: iconeClima(d.icone),
-              minima: d.minima,
-              maxima: d.maxima,
-            ),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: cidade.previsao.length,
+            itemBuilder: (context, index) {
+              final d = cidade.previsao[index];
+              return LinhaPrevisao(
+                dia: d.dia,
+                icone: iconeClima(d.icone),
+                minima: d.minima,
+                maxima: d.maxima,
+              );
+            },
+          ),
         ],
       ),
     );

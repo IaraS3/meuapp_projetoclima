@@ -4,15 +4,15 @@ import '../widgets/titulo_secao.dart';
 import '../widgets/item_previsao.dart';
 import 'previsao_semana.dart';
 
-class DetalhesAvancadosScreen extends StatelessWidget {
+class VerClimaScreen extends StatelessWidget {
   final Cidade cidade;
 
-  const DetalhesAvancadosScreen({super.key, required this.cidade});
+  const VerClimaScreen({super.key, required this.cidade});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Detalhes avançados')),
+      appBar: AppBar(title: Text(cidade.nome)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

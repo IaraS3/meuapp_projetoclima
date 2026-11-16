@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../data/cidades_data.dart';
 import '../widgets/card_cidade.dart';
 import '../widgets/card_cidade_principal.dart';
-import 'detalhes_avancados.dart';
+import 'ver_clima.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => DetalhesAvancadosScreen(cidade: cidades[indice]),
+        builder: (context) => VerClimaScreen(cidade: cidades[indice]),
       ),
     );
   }

@@ -29,6 +29,8 @@ class Cidade {
   final String pressao;
   final String visibilidade;
   final String nascerDoSol;
+  final String manha;
+  final String tarde;
   final List<DiaPrevisao> previsao;
 
   const Cidade({
@@ -48,6 +50,8 @@ class Cidade {
     required this.pressao,
     required this.visibilidade,
     required this.nascerDoSol,
+    this.manha = '20°C',
+    this.tarde = '29°C',
     required this.previsao,
   });
 }
