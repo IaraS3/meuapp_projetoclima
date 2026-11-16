@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/clima_atual.dart';
-import 'screens/previsao_semana.dart';
-import 'screens/detalhes_avancados.dart';
+import 'screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,61 +11,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'ClimaApp',
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(colorSchemeSeed: Colors.blue, useMaterial3: true),
       home: const HomeScreen(),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('ClimaApp')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ClimaAtualScreen(),
-                  ),
-                );
-              },
-              child: const Text('Clima atual'),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const PrevisaoSemanaScreen(),
-                  ),
-                );
-              },
-              child: const Text('Previsão da semana'),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const DetalhesAvancadosScreen(),
-                  ),
-                );
-              },
-              child: const Text('Detalhes avançados'),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

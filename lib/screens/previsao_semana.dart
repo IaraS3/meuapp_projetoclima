@@ -1,28 +1,13 @@
 import 'package:flutter/material.dart';
+import '../models/cidade.dart';
 import '../widgets/titulo_secao.dart';
 import '../widgets/linha_previsao.dart';
+import '../widgets/item_previsao.dart';
 
 class PrevisaoSemanaScreen extends StatelessWidget {
-  const PrevisaoSemanaScreen({super.key});
+  final Cidade cidade;
 
-  static const List<Map<String, String>> dias = [
-    {'dia': 'Sexta', 'icone': 'sol', 'min': '18°C', 'max': '30°C'},
-    {'dia': 'Sábado', 'icone': 'nuvem', 'min': '17°C', 'max': '27°C'},
-    {'dia': 'Domingo', 'icone': 'chuva', 'min': '16°C', 'max': '24°C'},
-    {'dia': 'Segunda', 'icone': 'sol', 'min': '18°C', 'max': '29°C'},
-    {'dia': 'Terça', 'icone': 'nuvem', 'min': '19°C', 'max': '28°C'},
-  ];
-
-  static IconData _icone(String nome) {
-    switch (nome) {
-      case 'sol':
-        return Icons.wb_sunny;
-      case 'chuva':
-        return Icons.umbrella;
-      default:
-        return Icons.cloud;
-    }
-  }
+  const PrevisaoSemanaScreen({super.key, required this.cidade});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +24,7 @@ class PrevisaoSemanaScreen extends StatelessWidget {
                 child: Container(
                   height: 60,
                   color: Colors.lightBlue.shade200,
-                  child: const Center(child: Text('Mínima: 18°C')),
+                  child: Center(child: Text('Mínima: ${cidade.minima}')),
                 ),
               ),
               Flexible(
@@ -47,14 +32,14 @@ class PrevisaoSemanaScreen extends StatelessWidget {
                 child: Container(
                   height: 60,
                   color: Colors.amber.shade300,
-                  child: const Center(child: Text('Atual: 26°C')),
+                  child: Center(child: Text('Atual: ${cidade.temperatura}')),
                 ),
               ),
               Expanded(
                 child: Container(
                   height: 60,
                   color: Colors.deepOrange.shade300,
-                  child: const Center(child: Text('Máxima: 31°C')),
+                  child: Center(child: Text('Máxima: ${cidade.maxima}')),
                 ),
               ),
             ],
@@ -87,20 +72,13 @@ class PrevisaoSemanaScreen extends StatelessWidget {
           const Divider(),
 
           const TituloSecao(titulo: 'Próximos dias'),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: dias.length,
-            itemBuilder: (context, index) {
-              final item = dias[index];
-              return LinhaPrevisao(
-                dia: item['dia']!,
-                icone: _icone(item['icone']!),
-                minima: item['min']!,
-                maxima: item['max']!,
-              );
-            },
-          ),
+          for (final d in cidade.previsao)
+            LinhaPrevisao(
+              dia: d.dia,
+              icone: iconeClima(d.icone),
+              minima: d.minima,
+              maxima: d.maxima,
+            ),
         ],
       ),
     );

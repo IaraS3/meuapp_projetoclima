@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import '../models/cidade.dart';
 import '../widgets/titulo_secao.dart';
+import '../widgets/item_previsao.dart';
+import 'previsao_semana.dart';
 
 class DetalhesAvancadosScreen extends StatelessWidget {
-  const DetalhesAvancadosScreen({super.key});
+  final Cidade cidade;
+
+  const DetalhesAvancadosScreen({super.key, required this.cidade});
 
   @override
   Widget build(BuildContext context) {
@@ -11,46 +16,12 @@ class DetalhesAvancadosScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const TituloSecao(titulo: 'Alertas'),
-          const Card(
-            child: ListTile(
-              leading: Icon(Icons.warning, color: Colors.orange),
-              title: Text('Chuva forte'),
-              subtitle: Text('Previsto para hoje, a partir das 18h'),
-              trailing: Icon(Icons.chevron_right),
-            ),
-          ),
-          const Card(
-            child: ListTile(
-              leading: Icon(Icons.bolt, color: Colors.red),
-              title: Text('Trovoadas isoladas'),
-              subtitle: Text('Previsto para a noite de hoje'),
-              trailing: Icon(Icons.chevron_right),
-            ),
-          ),
-          const Divider(),
-
-          const TituloSecao(titulo: 'Indicadores'),
-          const SizedBox(height: 8),
-          GridView.count(
-            crossAxisCount: 2,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            children: const [
-              _Indicador(icone: Icons.wb_sunny, valor: '6', nome: 'Índice UV'),
-              _Indicador(icone: Icons.speed, valor: '1013 hPa', nome: 'Pressão'),
-              _Indicador(icone: Icons.visibility, valor: '10 km', nome: 'Visibilidade'),
-              _Indicador(icone: Icons.wb_twilight, valor: '05:20', nome: 'Nascer do sol'),
-            ],
-          ),
-          const Divider(),
-
           const TituloSecao(titulo: 'Condição do tempo'),
           const SizedBox(height: 8),
           Stack(
             children: [
               Image.network(
-                'https://images.unsplash.com/photo-1763568972598-02eeb63efce1?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
+                cidade.imagem,
                 height: 200,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -60,38 +31,84 @@ class DetalhesAvancadosScreen extends StatelessWidget {
                   child: Icon(Icons.cloud, size: 80),
                 ),
               ),
-              const Positioned(
+              Positioned(
                 left: 12,
                 bottom: 12,
                 child: Text(
-                  '26°C',
-                  style: TextStyle(
-                    fontSize: 40,
+                  '${cidade.nome}\n${cidade.temperatura} • ${cidade.condicao}',
+                  style: const TextStyle(
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
               ),
-              const Positioned(
-                right: 12,
-                top: 12,
-                child: Icon(Icons.wb_sunny, color: Colors.white, size: 32),
-              ),
             ],
           ),
           const Divider(),
 
-          const TituloSecao(titulo: 'Tags'),
+          const TituloSecao(titulo: 'Alertas'),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.warning, color: Colors.orange),
+              title: Text(cidade.alertaTitulo),
+              subtitle: Text(cidade.alertaTexto),
+            ),
+          ),
+          const Divider(),
+
+          const TituloSecao(titulo: 'Previsão da semana'),
+          Card(
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PrevisaoSemanaScreen(cidade: cidade),
+                  ),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  children: [
+                    for (final d in cidade.previsao)
+                      ItemPrevisao(
+                        dia: d.dia,
+                        icone: d.icone,
+                        minima: d.minima,
+                        maxima: d.maxima,
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(top: 4),
+            child: Text('Toque para ver a previsão completa'),
+          ),
+          const Divider(),
+
+          const TituloSecao(titulo: 'Indicadores'),
           const SizedBox(height: 8),
-          const Wrap(
-            spacing: 8,
-            runSpacing: 8,
+          GridView.count(
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             children: [
-              Chip(avatar: Icon(Icons.water_drop, size: 18), label: Text('Chuva forte')),
-              Chip(avatar: Icon(Icons.wb_sunny, size: 18), label: Text('UV alto')),
-              Chip(label: Text('Vento moderado')),
-              Chip(label: Text('Umidade alta')),
-              Chip(label: Text('Frente fria')),
+              _Indicador(
+                  icone: Icons.wb_sunny, valor: cidade.uv, nome: 'Índice UV'),
+              _Indicador(
+                  icone: Icons.speed, valor: cidade.pressao, nome: 'Pressão'),
+              _Indicador(
+                  icone: Icons.visibility,
+                  valor: cidade.visibilidade,
+                  nome: 'Visibilidade'),
+              _Indicador(
+                  icone: Icons.wb_twilight,
+                  valor: cidade.nascerDoSol,
+                  nome: 'Nascer do sol'),
             ],
           ),
         ],
@@ -119,7 +136,9 @@ class _Indicador extends StatelessWidget {
         children: [
           Icon(icone, size: 32),
           const SizedBox(height: 4),
-          Text(valor, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          Text(valor,
+              style:
+                  const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           Text(nome),
         ],
       ),
